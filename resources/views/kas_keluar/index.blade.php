@@ -14,11 +14,7 @@
         <p class="text-muted mb-0">Catat pengeluaran toko</p>
     </div>
 
-    <button
-        class="btn btn-danger"
-        data-bs-toggle="modal"
-        data-bs-target="#modalTambahKasKeluar"
-    >
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalTambahKasKeluar">
         <i class="bx bx-plus me-1"></i>
         Tambah Kas Keluar
     </button>
@@ -36,7 +32,7 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Tujuan</th>
-                        <th>Keterangan</th>
+                        <th class="text-center">Quantity</th>
                         <th class="text-end">Jumlah</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -47,28 +43,24 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                             <td>{{ $item->tujuan }}</td>
-                            <td>{{ $item->keterangan ?? '-' }}</td>
+                            <td class="text-center">{{ $item->quantity }}</td>
                             <td class="text-danger fw-semibold text-end">
                                 -Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
                             <td class="text-center">
 
                                 {{-- EDIT --}}
-                                <button
-                                    class="btn btn-sm btn-outline-secondary"
+                                <button class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#modalEditKasKeluar{{ $item->id }}"
-                                >
+                                    data-bs-target="#modalEditKasKeluar{{ $item->id }}">
                                     <i class="bx bx-edit"></i>
                                 </button>
 
                                 {{-- DELETE --}}
-                                <form
-                                    action="{{ route('kas-keluar.destroy', $item->id) }}"
-                                    method="POST"
-                                    class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')"
-                                >
+                                <form action="{{ route('kas-keluar.destroy', $item->id) }}"
+                                      method="POST"
+                                      class="d-inline"
+                                      onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger">
@@ -107,14 +99,15 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label">Tujuan</label>
-                                                <input type="text" name="tujuan" class="form-control"
-                                                    value="{{ $item->tujuan }}" required>
+                                                <label class="form-label">Quantity</label>
+                                                <input type="number" name="quantity" class="form-control"
+                                                    value="{{ $item->quantity }}" min="1" required>
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label">Keterangan</label>
-                                                <textarea name="keterangan" class="form-control" rows="3">{{ $item->keterangan }}</textarea>
+                                                <label class="form-label">Tujuan</label>
+                                                <input type="text" name="tujuan" class="form-control"
+                                                    value="{{ $item->tujuan }}" required>
                                             </div>
                                         </div>
 
@@ -169,14 +162,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Tujuan</label>
-                        <input type="text" name="tujuan" class="form-control"
-                            placeholder="Beli bahan baku" required>
+                        <label class="form-label">Quantity</label>
+                        <input type="number" name="quantity" class="form-control"
+                            placeholder="1" min="1" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Keterangan</label>
-                        <textarea name="keterangan" class="form-control" rows="3"></textarea>
+                        <label class="form-label">Tujuan</label>
+                        <input type="text" name="tujuan" class="form-control"
+                            placeholder="Beli bahan baku" required>
                     </div>
                 </div>
 
@@ -194,8 +188,7 @@
 {{-- ================= TOAST SUCCESS ================= --}}
 @if(session('success'))
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="successToast"
-         class="toast text-bg-danger border-0 show slide-in">
+    <div id="successToast" class="toast text-bg-danger border-0 show slide-in">
         <div class="d-flex">
             <div class="toast-body">
                 {{ session('success') }}

@@ -15,11 +15,9 @@
     </div>
 
     {{-- EXPORT PDF --}}
-    <a
-        href="{{ route('laporan.export-pdf', request()->query()) }}"
-        class="btn btn-danger"
-        target="_blank"
-    >
+    <a href="{{ route('laporan.export-pdf', request()->query()) }}"
+       class="btn btn-danger"
+       target="_blank">
         <i class="bx bxs-file-pdf me-1"></i>
         Export PDF
     </a>
@@ -31,24 +29,16 @@
         <form method="GET" action="{{ route('laporan.index') }}" class="row g-3 align-items-end">
             <div class="col-md-4">
                 <label class="form-label">Tanggal Mulai</label>
-                <input
-                    type="date"
-                    name="tanggal_mulai"
-                    class="form-control"
-                    value="{{ $tanggalMulai }}"
-                >
+                <input type="date" name="tanggal_mulai" class="form-control"
+                       value="{{ $tanggalMulai }}">
             </div>
             <div class="col-md-4">
                 <label class="form-label">Tanggal Selesai</label>
-                <input
-                    type="date"
-                    name="tanggal_selesai"
-                    class="form-control"
-                    value="{{ $tanggalSelesai }}"
-                >
+                <input type="date" name="tanggal_selesai" class="form-control"
+                       value="{{ $tanggalSelesai }}">
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary mt-4 w-100">
+                <button class="btn btn-primary w-100">
                     <i class="bx bx-filter me-1"></i>
                     Tampilkan
                 </button>
@@ -60,10 +50,10 @@
 {{-- ================= RINGKASAN ================= --}}
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
                 <span class="fw-semibold">Total Kas Masuk</span>
-                <h4 class="text-success mt-2">
+                <h4 class="text-success mt-2 mb-0">
                     Rp {{ number_format($totalMasuk, 0, ',', '.') }}
                 </h4>
             </div>
@@ -71,10 +61,10 @@
     </div>
 
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
                 <span class="fw-semibold">Total Kas Keluar</span>
-                <h4 class="text-danger mt-2">
+                <h4 class="text-danger mt-2 mb-0">
                     Rp {{ number_format($totalKeluar, 0, ',', '.') }}
                 </h4>
             </div>
@@ -82,10 +72,10 @@
     </div>
 
     <div class="col-md-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
                 <span class="fw-semibold">Saldo</span>
-                <h4 class="text-primary mt-2">
+                <h4 class="text-primary mt-2 mb-0">
                     Rp {{ number_format($saldo, 0, ',', '.') }}
                 </h4>
             </div>
@@ -107,8 +97,8 @@
                     <tr>
                         <th>Tanggal</th>
                         <th>Sumber</th>
-                        <th>Jumlah</th>
-                        <th>Keterangan</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Jumlah</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,10 +106,10 @@
                         <tr>
                             <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
                             <td>{{ $item->sumber }}</td>
-                            <td class="text-success fw-semibold">
+                            <td class="text-center">{{ $item->quantity }}</td>
+                            <td class="text-success fw-semibold text-end">
                                 Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
-                            <td>{{ $item->keterangan ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -148,8 +138,8 @@
                     <tr>
                         <th>Tanggal</th>
                         <th>Tujuan</th>
-                        <th>Jumlah</th>
-                        <th>Keterangan</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Jumlah</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,10 +147,10 @@
                         <tr>
                             <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
                             <td>{{ $item->tujuan }}</td>
-                            <td class="text-danger fw-semibold">
+                            <td class="text-center">{{ $item->quantity }}</td>
+                            <td class="text-danger fw-semibold text-end">
                                 Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
-                            <td>{{ $item->keterangan ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>

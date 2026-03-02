@@ -14,11 +14,7 @@
         <p class="text-muted mb-0">Catat pemasukan toko</p>
     </div>
 
-    <button
-        class="btn btn-success"
-        data-bs-toggle="modal"
-        data-bs-target="#modalTambahKasMasuk"
-    >
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahKasMasuk">
         <i class="bx bx-plus me-1"></i>
         Tambah Kas Masuk
     </button>
@@ -36,7 +32,7 @@
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Sumber</th>
-                        <th>Keterangan</th>
+                        <th class="text-center">Quantity</th>
                         <th class="text-end">Jumlah</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -47,7 +43,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->tanggal)) }}</td>
                             <td>{{ $item->sumber }}</td>
-                            <td>{{ $item->keterangan ?? '-' }}</td>
+                            <td class="text-center">{{ $item->quantity }}</td>
                             <td class="text-success fw-semibold text-end">
                                 +Rp {{ number_format($item->jumlah, 0, ',', '.') }}
                             </td>
@@ -57,8 +53,7 @@
                                 <button
                                     class="btn btn-sm btn-outline-secondary"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#modalEditKasMasuk{{ $item->id }}"
-                                >
+                                    data-bs-target="#modalEditKasMasuk{{ $item->id }}">
                                     <i class="bx bx-edit"></i>
                                 </button>
 
@@ -67,8 +62,7 @@
                                     action="{{ route('kas-masuk.destroy', $item->id) }}"
                                     method="POST"
                                     class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')"
-                                >
+                                    onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger">
@@ -107,14 +101,15 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label">Sumber</label>
-                                                <input type="text" name="sumber" class="form-control"
-                                                    value="{{ $item->sumber }}" required>
+                                                <label class="form-label">Quantity</label>
+                                                <input type="number" name="quantity" class="form-control"
+                                                    value="{{ $item->quantity }}" min="1" required>
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label">Keterangan</label>
-                                                <textarea name="keterangan" class="form-control" rows="3">{{ $item->keterangan }}</textarea>
+                                                <label class="form-label">Sumber</label>
+                                                <input type="text" name="sumber" class="form-control"
+                                                    value="{{ $item->sumber }}" required>
                                             </div>
                                         </div>
 
@@ -169,14 +164,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Sumber</label>
-                        <input type="text" name="sumber" class="form-control"
-                            placeholder="Penjualan Snack" required>
+                        <label class="form-label">Quantity</label>
+                        <input type="number" name="quantity" class="form-control"
+                            placeholder="1" min="1" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Keterangan</label>
-                        <textarea name="keterangan" class="form-control" rows="3"></textarea>
+                        <label class="form-label">Sumber</label>
+                        <input type="text" name="sumber" class="form-control"
+                            placeholder="Penjualan Snack" required>
                     </div>
                 </div>
 
@@ -194,8 +190,7 @@
 {{-- ================= TOAST SUCCESS ================= --}}
 @if(session('success'))
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="successToast"
-         class="toast text-bg-success border-0 show slide-in">
+    <div id="successToast" class="toast text-bg-success border-0 show slide-in">
         <div class="d-flex">
             <div class="toast-body">
                 {{ session('success') }}

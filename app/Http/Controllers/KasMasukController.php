@@ -25,17 +25,17 @@ class KasMasukController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tanggal'    => 'required|date',
-            'jumlah'     => 'required|numeric|min:1',
-            'sumber'     => 'required|string|max:255',
-            'keterangan' => 'nullable|string',
+            'tanggal'  => 'required|date',
+            'jumlah'   => 'required|numeric|min:1',
+            'sumber'   => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
         ]);
 
         DB::table('kas_masuk')->insert([
             'tanggal'    => $request->tanggal,
             'jumlah'     => $request->jumlah,
             'sumber'     => $request->sumber,
-            'keterangan' => $request->keterangan,
+            'quantity'   => $request->quantity,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -50,10 +50,10 @@ class KasMasukController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'tanggal'    => 'required|date',
-            'jumlah'     => 'required|numeric|min:1',
-            'sumber'     => 'required|string|max:255',
-            'keterangan' => 'nullable|string',
+            'tanggal'  => 'required|date',
+            'jumlah'   => 'required|numeric|min:1',
+            'sumber'   => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
         ]);
 
         DB::table('kas_masuk')
@@ -62,7 +62,7 @@ class KasMasukController extends Controller
                 'tanggal'    => $request->tanggal,
                 'jumlah'     => $request->jumlah,
                 'sumber'     => $request->sumber,
-                'keterangan' => $request->keterangan,
+                'quantity'   => $request->quantity,
                 'updated_at' => now(),
             ]);
 

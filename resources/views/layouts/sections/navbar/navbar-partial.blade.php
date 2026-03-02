@@ -26,20 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
-        <div class="nav-item d-flex align-items-center">
-            <i class="icon-base bx bx-search icon-md"></i>
-            <input
-                type="text"
-                class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                placeholder="Search..."
-                aria-label="Search..."
-            >
-        </div>
-    </div>
-    <!-- /Search -->
-
+    <!-- RIGHT NAVBAR -->
     <ul class="navbar-nav flex-row align-items-center ms-auto">
 
         <!-- USER -->
@@ -86,15 +73,14 @@ use Illuminate\Support\Facades\Route;
 
                 <!-- Profile -->
                 <li>
-                <a class="dropdown-item" href="{{ route('profile.index') }}">
-                    <i class="icon-base bx bx-user icon-md me-3"></i>
-                    <span>My Profile</span>
-                </a>
-
+                    <a class="dropdown-item" href="{{ route('profile.index') }}">
+                        <i class="icon-base bx bx-user icon-md me-3"></i>
+                        <span>My Profile</span>
+                    </a>
                 </li>
 
-                <!-- Settings -->
-                <li>
+                <!-- Settings (optional, can be removed later) -->
+                <!-- <li>
                     <a class="dropdown-item" href="javascript:void(0);">
                         <i class="icon-base bx bx-cog icon-md me-3"></i>
                         <span>Settings</span>
@@ -103,7 +89,7 @@ use Illuminate\Support\Facades\Route;
 
                 <li>
                     <div class="dropdown-divider my-1"></div>
-                </li>
+                </li> -->
 
                 <!-- Logout -->
                 <li>
