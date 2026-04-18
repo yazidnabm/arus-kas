@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 | Redirect Root
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -39,6 +40,8 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+
+    Route::get('/api/chart-data', [DashboardController::class, 'getChartData']);
 
     // Kas Masuk
     Route::get('/kas-masuk', [KasMasukController::class, 'index'])
@@ -69,8 +72,8 @@ Route::middleware('auth')->group(function () {
         ->name('laporan.export-pdf');
 
     Route::get('/profile', [ProfileController::class, 'index'])
-    ->name('profile.index');
+        ->name('profile.index');
 
     Route::post('/profile', [ProfileController::class, 'update'])
-    ->name('profile.update');
+        ->name('profile.update');
 });
