@@ -7,16 +7,48 @@ use Illuminate\Support\Facades\DB;
 
 class KasKeluarController extends Controller
 {
-    /**
-     * Tampilkan halaman kas keluar
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $data = DB::table('kas_keluar')
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        // 1. Ambil Parameter Filter
+        $perPage   = $request->get('per_page', 10);
+        $startDate = $request->get('start_date');
+        $endDate   = $request->get('end_date');
 
-        return view('kas_keluar.index', compact('data'));
+        // 2. Query Dasar untuk Statistik Global (Tanpa Paginate)
+        $queryStats = DB::table('kas_keluar');
+
+        if ($startDate && $endDate) {
+            $queryStats->whereBetween('tanggal', [$startDate, $endDate]);
+        }
+
+        // Hitung Statistik Keseluruhan
+        $totalPengeluaranAll = $queryStats->sum('jumlah');
+        $totalItemOutAll      = $queryStats->sum('quantity');
+
+        // Cari Tujuan Pengeluaran Terbanyak (Alokasi Dana Terbesar)
+        $tujuanTerbanyak = DB::table('kas_keluar')
+            ->select('tujuan', DB::raw('COUNT(*) as total_transaksi'))
+            ->groupBy('tujuan')
+            ->orderBy('total_transaksi', 'desc')
+            ->first();
+
+        // 3. Query untuk Tabel (Dengan Paginate)
+        $queryTable = DB::table('kas_keluar')->orderBy('tanggal', 'desc');
+
+        if ($startDate && $endDate) {
+            $queryTable->whereBetween('tanggal', [$startDate, $endDate]);
+        }
+
+        $data = $queryTable->paginate($perPage);
+
+        return view('kas_keluar.index', compact(
+            'data',
+            'totalPengeluaranAll',
+            'totalItemOutAll',
+            'tujuanTerbanyak',
+            'startDate',
+            'endDate'
+        ));
     }
 
     /**

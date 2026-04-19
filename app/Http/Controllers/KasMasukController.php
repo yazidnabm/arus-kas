@@ -7,17 +7,49 @@ use Illuminate\Support\Facades\DB;
 
 class KasMasukController extends Controller
 {
-    /**
-     * Tampilkan halaman kas masuk
-     */
-    public function index()
-    {
-        $data = DB::table('kas_masuk')
-            ->orderBy('tanggal', 'desc')
-            ->get();
+    public function index(Request $request)
+{
+    // 1. Ambil Parameter Filter
+    $perPage   = $request->get('per_page', 10);
+    $startDate = $request->get('start_date');
+    $endDate   = $request->get('end_date');
 
-        return view('kas_masuk.index', compact('data'));
+    // 2. Query Dasar untuk Statistik (Tanpa Paginate)
+    $queryStats = DB::table('kas_masuk');
+
+    if ($startDate && $endDate) {
+        $queryStats->whereBetween('tanggal', [$startDate, $endDate]);
     }
+
+    // Hitung Statistik Keseluruhan
+    $totalPemasukanAll = $queryStats->sum('jumlah');
+    $totalItemAll      = $queryStats->sum('quantity');
+    
+    // Cari Produk Terlaris (Berdasarkan frekuensi atau jumlah terbanyak)
+    $produkTerlaris = DB::table('kas_masuk')
+        ->select('sumber', DB::raw('COUNT(*) as total_order'))
+        ->groupBy('sumber')
+        ->orderBy('total_order', 'desc')
+        ->first();
+
+    // 3. Query untuk Tabel (Dengan Paginate)
+    $queryTable = DB::table('kas_masuk')->orderBy('tanggal', 'desc');
+
+    if ($startDate && $endDate) {
+        $queryTable->whereBetween('tanggal', [$startDate, $endDate]);
+    }
+
+    $data = $queryTable->paginate($perPage);
+
+    return view('kas_masuk.index', compact(
+        'data', 
+        'totalPemasukanAll', 
+        'totalItemAll', 
+        'produkTerlaris',
+        'startDate',
+        'endDate'
+    ));
+}
 
     /**
      * Simpan data kas masuk
